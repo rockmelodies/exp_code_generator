@@ -50,6 +50,7 @@ def generate():
     filePath = r'pocs/%s.py' % className
     class_file = open(filePath, 'w')
     lines = []
+
     # 模版文件
     template_file = open(r'pocsuite3_code.template', 'r')
     tmpl = Template(template_file.read())
