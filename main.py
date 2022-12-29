@@ -47,7 +47,6 @@ def generate():
     uri = env_dist.get('URI')
     appVersion = env_dist.get('APPVERSION')
     attack_uri = env_dist.get('ATTACK_URI')
-
     filePath = r'pocs/%s.py' % className
     class_file = open(filePath, 'w')
     lines = []
