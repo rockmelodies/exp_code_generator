@@ -51,7 +51,6 @@ class ${CLASSNAME}(POCBase):
         ${FILE_PATH}o["file_path"] = OptString("", description='待上传文件的绝对路径，一般是webshell文件，用于文件上传的attack')
         return o
 
-
     def _exploit(self, param=''):
         # 使用 self._check() 方法检查目标是否存活，是否是关键词蜜罐。
         #if not self._check(dork=''):
