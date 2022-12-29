@@ -30,7 +30,7 @@ def generate():
     severity = env_dist.get('SEVERITY')
     reqAuth = env_dist.get('REQAUTH')
     fingerprintNames = env_dist.get('FINGERPRINT_NAMES')
-    appPowerLink = env_dist.get('APP_MAIN_PORT')
+    appPowerLink = env_dist.get('APP_POWER_LINK')
     desc = env_dist.get('DESC')
     suggest = env_dist.get('SUGGEST')
     hasExp = env_dist.get('HASEXP')
@@ -73,7 +73,7 @@ def generate():
         SEVERITY=severity,
         REQAUTH=reqAuth,
         FINGERPRINT_NAMES=fingerprintNames,
-        APP_MAIN_PORT=appPowerLink,
+        APP_POWER_Link=appPowerLink,
         DESC=desc,
         SUGGEST=suggest,
         HASEXP=hasExp,

@@ -29,7 +29,7 @@ class ${CLASSNAME}(POCBase):
     app_main_port = ${APP_MAIN_PORT}  # 必填，该应用的默认配置端口，用于快速扫描模式，若无法确认可以写80
     appVersion = '${APPVERSION}'  # 必填，漏洞影响的版本号
 
-    appPowerLink = 'https://www.oracle.com/'  # 非必填，应用厂商链接
+    appPowerLink = '${APP_POWER_LINK}'  # 非必填，应用厂商链接
     references = ['${REFERENCES}']  # 非必填，漏洞相关参考链接
     desc = '''${DESC}'''  # 必填，漏洞描述，需尽量详细，参考cnnvd的写法 [应用简介]，[漏洞简介]
     suggest = '''${SUGGEST}'''  # 必填，修复建议
