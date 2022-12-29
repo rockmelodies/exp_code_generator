@@ -74,7 +74,7 @@ def generate():
         SEVERITY=severity,
         REQAUTH=reqAuth,
         FINGERPRINT_NAMES=fingerprintNames,
-        APP_POWER_Link=appPowerLink,
+        APP_POWER_LINK=appPowerLink,
         DESC=desc,
         SUGGEST=suggest,
         HASEXP=hasExp,
