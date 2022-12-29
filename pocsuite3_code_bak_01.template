@@ -1,5 +1,5 @@
 from pocsuite3.api import Output, POCBase, logger, VUL_TYPE, POC_CATEGORY, OrderedDict, OptString
-from pocsuite3.api import register_poc,random_str
+from pocsuite3.api import register_poc
 from pocsuite3.api import requests
 import random
 import string
@@ -51,49 +51,41 @@ class ${CLASSNAME}(POCBase):
         ${FILE_PATH}o["file_path"] = OptString("", description='待上传文件的绝对路径，一般是webshell文件，用于文件上传的attack')
         return o
 
-
-    def _exploit(self, param=''):
-        # 使用 self._check() 方法检查目标是否存活，是否是关键词蜜罐。
-        #if not self._check(dork=''):
-        #    return False
-
+    def _verify(self):
+        result = {}
         url= self.url.rstrip("/")
         payload_url = url + "${URI}"
         headers = ${HEADERS}
-        payload_data = f"${PAYLOAD_DATA}"
+        payload_data = ${PAYLOAD_DATA}
         try:
-            res = requests.${METHOD}(payload_url, payload_data, headers=headers)
-            logger.debug(res.text)
-            return res.text
+            r = requests.${METHOD}(payload_url, payload_data, headers=headers)
+            if r.status_code == 200 and "${KEYWORD}" in r.text:
+                result['VerifyInfo'] = {}
+                result['VerifyInfo']['URL'] = self.url
         except Exception as e:
             logger.error(f"connect target '{self.url} failed!'")
-
-    def _verify(self):
-        result = {}
-        url = self.url.rstrip("/")
-        flag = random_str(6)
-        param = f"echo {flag}"
-        res = self._exploit(param)
-        if flag in res:
-            result['VerifyInfo'] = {}
-            result['VerifyInfo']['URL'] = url
         return self.parse_output(result)
 
     def _attack(self):
         filename = get_filename()
-        ${COMMAND}param = self.get_option('command')
+        ${COMMAND}cmd = self.get_option('command')
         ${FILE_PATH}with open(self.get_option("file_path"), "r") as f:
             ${FILE_PATH}f = str(f.read())
-            ${FILE_PATH}param = f
-
-        res = self._exploit(param)
+            ${FILE_PATH}file_content = f
         result = {}
         url = self.url.rstrip("/")
+        payload_url = url + f"${ATTACK_URI}"
+        headers = ${HEADERS}
         payload_data = """${ATTACK_PAYLOAD_DATA}"""
-        result['AttackInfo'] = {}
-        result['AttackInfo']['URL'] = url
-        ${FILE_PATH}result['AttackInfo']['FILE_URL'] = url + "/" + filename + ".php"
-        ${COMMAND}result['AttackInfo']['Stdout'] = res
+        try:
+            r = requests.${METHOD}(payload_url, payload_data, headers=headers)
+            if r.status_code == 200:
+                result['AttackInfo'] = {}
+                result['AttackInfo']['URL'] = url
+                ${FILE_PATH}result['AttackInfo']['FILE_URL'] = url + "/" + filename + ".php"
+                ${COMMAND}result['AttackInfo']['Stdout'] = r.text
+        except Exception as e:
+            logger.error(f"connect target '{self.url} failed!'")
         return self.parse_output(result)
 
     def parse_output(self, result):
