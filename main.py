@@ -45,6 +45,7 @@ def generate():
     attack_payload_data = env_dist.get('ATTACK_PAYLOAD_DATA')
     references = env_dist.get('REFERENCES')
     uri = env_dist.get('URI')
+    app_main_port= env_dist.get('APP_MAIN_PORT')
     appVersion = env_dist.get('APPVERSION')
     attack_uri = env_dist.get('ATTACK_URI')
     filePath = r'pocs/%s.py' % className
@@ -89,6 +90,7 @@ def generate():
         ATTACK_PAYLOAD_DATA=attack_payload_data,
         APPVERSION=appVersion,
         ATTACK_URI=attack_uri,
+        APP_MAIN_PORT=app_main_port,
         EXPIRE_DATE='06JUN14'))
     # 0.将生成的代码写入文件
     class_file.writelines(lines)
