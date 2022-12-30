@@ -96,6 +96,5 @@ def generate():
     class_file.writelines(lines)
     class_file.close()
 
-
 if __name__ == '__main__':
     generate()
