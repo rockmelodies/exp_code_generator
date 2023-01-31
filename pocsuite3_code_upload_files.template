@@ -55,15 +55,19 @@ class ${CLASSNAME}(POCBase):
         # 使用 self._check() 方法检查目标是否存活，是否是关键词蜜罐。
         #if not self._check(dork=''):
         #    return False
-
+        filename = get_filename() +'.${FILE_SUFFIX}'
         url= self.url.rstrip("/")
+        timeout = ${TIMEOUT}
         payload_url = url + "${URI}"
+        shell_path = url + '${UPLOAD_DIRECTORY}' + filename
         headers = ${HEADERS}
-        payload_data = f"${PAYLOAD_DATA}"
+        payload_data = ${PAYLOAD_DATA}
         try:
-            res = requests.${METHOD}(payload_url, payload_data, headers=headers)
+            requests.${METHOD}(payload_url,files=payload_data,headers=headers,timeout=timeout, verify=False,allow_redirects = False)
+            res = requests.get(shell_path,timeout=timeout, verify=False,allow_redirects = False)
             logger.debug(res.text)
-            return res.text
+            data = {"shell_path":shell_path,"resp":res.text }
+            return data
         except Exception as e:
             logger.error(f"connect target '{self.url} failed!'")
 
@@ -72,10 +76,14 @@ class ${CLASSNAME}(POCBase):
         url = self.url.rstrip("/")
         flag = random_str(6)
         param = f"echo {flag}"
-        res = self._exploit(param)
-        if flag in res:
-            result['VerifyInfo'] = {}
-            result['VerifyInfo']['URL'] = url
+        try:
+            res = self._exploit(param)
+            if flag in res.resp:
+                result['VerifyInfo'] = {}
+                result['VerifyInfo']['URL'] = url
+                result['VerifyInfo']['FILE_URL'] = res['shell_path']
+        except Exception as e:
+            pass
         return self.parse_output(result)
 
     def _attack(self):
@@ -84,15 +92,17 @@ class ${CLASSNAME}(POCBase):
         ${FILE_PATH}with open(self.get_option("file_path"), "r") as f:
             ${FILE_PATH}f = str(f.read())
             ${FILE_PATH}param = f
-
-        res = self._exploit(param)
-        result = {}
-        url = self.url.rstrip("/")
-        payload_data = """${ATTACK_PAYLOAD_DATA}"""
-        result['AttackInfo'] = {}
-        result['AttackInfo']['URL'] = url
-        ${FILE_PATH}result['AttackInfo']['FILE_URL'] = url + "/" + filename + ".php"
-        ${COMMAND}result['AttackInfo']['Stdout'] = res
+        try:
+            res = self._exploit(param)
+            result = {}
+            url = self.url.rstrip("/")
+            payload_data = """${ATTACK_PAYLOAD_DATA}"""
+            result['AttackInfo'] = {}
+            result['AttackInfo']['URL'] = url
+            ${FILE_PATH}result['AttackInfo']['FILE_URL'] = res['shell_path']
+            ${COMMAND}result['AttackInfo']['Stdout'] = res
+        except Exception as e:
+            pass
         return self.parse_output(result)
 
     def parse_output(self, result):

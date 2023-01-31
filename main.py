@@ -48,12 +48,15 @@ def generate():
     app_main_port= env_dist.get('APP_MAIN_PORT')
     appVersion = env_dist.get('APPVERSION')
     attack_uri = env_dist.get('ATTACK_URI')
+    upload_directory = env_dist.get('UPLOAD_DIRECTORY')
+    timeout = env_dist.get('TIMEOUT')
+    file_suffix = env_dist.get('FILE_SUFFIX')
     filePath = r'pocs/%s.py' % className
     class_file = open(filePath, 'w')
     lines = []
 
     # 模版文件
-    template_file = open(r'pocsuite3_code.template', 'r')
+    template_file = open(r'pocsuite3_code_upload_files.template', 'r')
     tmpl = Template(template_file.read())
     # 模版替换
     # substitute 会报错 没有匹配到的数值；safe_substitute 会将没有匹配到的数据 原封不动展示出来
@@ -91,6 +94,9 @@ def generate():
         APPVERSION=appVersion,
         ATTACK_URI=attack_uri,
         APP_MAIN_PORT=app_main_port,
+        UPLOAD_DIRECTORY = upload_directory,
+        FILE_SUFFIX = file_suffix,
+        TIMEOUT = timeout,
         EXPIRE_DATE='06JUN14'))
     # 0.将生成的代码写入文件
     class_file.writelines(lines)
