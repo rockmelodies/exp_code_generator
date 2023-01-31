@@ -78,7 +78,7 @@ class ${CLASSNAME}(POCBase):
         param = f"echo {flag}"
         try:
             res = self._exploit(param)
-            if flag in res.resp:
+            if flag in res['resp']:
                 result['VerifyInfo'] = {}
                 result['VerifyInfo']['URL'] = url
                 result['VerifyInfo']['FILE_URL'] = res['shell_path']

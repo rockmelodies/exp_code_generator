@@ -37,7 +37,6 @@ HEADERS = "None"
 ATTACK_PAYLOAD_DATA = '11'
 ATTACK_URI = "" #利用payload请求uri
 
-
 #### 生成之后的代码
 
 ![img.png](img.png)
