@@ -34,7 +34,7 @@ class ${CLASSNAME}(POCBase):
     desc = '''${DESC}'''  # 必填，漏洞描述，需尽量详细，参考cnnvd的写法 [应用简介]，[漏洞简介]
     suggest = '''${SUGGEST}'''  # 必填，修复建议
     hasExp = ${HASEXP}  # 必填，boolen值，是否包含exp
-    targets = ['${TARGETS}']  # 必填，该Poc适用的目标，string类型 https://github.com/vulhub/vulhub/tree/master/weblogic/CVE-2017-10271
+    targets = '${TARGETS}'  # 必填，该Poc适用的目标，string类型 https://github.com/vulhub/vulhub/tree/master/weblogic/CVE-2017-10271
     suricata_rules = 'alert tcp any any -> any any (msg:"${CLASSNAME}"; content:"${SURICATA_RULES}";sid:1;classtype:aes; metadata:aes_team_rules;)'  # 必填，suricata格式的检测规则
 
     def _options(self):
@@ -52,6 +52,9 @@ class ${CLASSNAME}(POCBase):
         return o
 
     def _exploit(self, param=''):
+        '''
+        sudo python3 cli.py -r jinhang_LDY_2022_00137525 -u http://221.10.126.221:8088  --proxy http://127.0.0.1:8089
+        '''
         # 使用 self._check() 方法检查目标是否存活，是否是关键词蜜罐。
         #if not self._check(dork=''):
         #    return False
