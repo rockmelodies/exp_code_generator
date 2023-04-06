@@ -1,5 +1,5 @@
+#coding=utf8
 '''
-coding:utf-8
 @Software:PyCharm
 @Time:2022/12/22 15:46
 @Author:尘心||rocky
@@ -52,11 +52,11 @@ def generate():
     timeout = env_dist.get('TIMEOUT')
     file_suffix = env_dist.get('FILE_SUFFIX')
     filePath = r'pocs/%s.py' % className
-    class_file = open(filePath, 'w')
+    class_file = open(filePath, 'w',encoding="utf-8")
     lines = []
 
     # 模版文件
-    template_file = open(r'pocsuite3_code_upload_files.template', 'r')
+    template_file = open(r'pocsuite3_code_upload_files.template', 'r',encoding="utf-8")
     tmpl = Template(template_file.read())
     # 模版替换
     # substitute 会报错 没有匹配到的数值；safe_substitute 会将没有匹配到的数据 原封不动展示出来
